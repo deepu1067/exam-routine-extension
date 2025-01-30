@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      width: 300px;
+      padding: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 5px 0;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+  <h3>Student ID:</h3>
+  <div id="studentId"></div>
+  <h3>Courses:</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Course Code</th>
+        <th>Section</th>
+      </tr>
+    </thead>
+    <tbody id="coursesList">
+    </tbody>
+  </table>
+  <script src="popup.js"></script>
+</body>
+</html>
