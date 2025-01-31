@@ -1,23 +1,15 @@
-const script = document.createElement('script');
-script.src = chrome.runtime.getURL('xlsx.full.min.js');
-document.head.appendChild(script);
+let pageData = {};
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.action === "fetchExamSchedule") {
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.action === 'pageData') {
+        pageData = message.data;
+    }
+});
 
-        fetch(chrome.runtime.getURL("final/final-exam-schedule_sose_undergrad_243.xlsx"))
-            .then(response => response.arrayBuffer())
-            .then(buffer => {
-                const workbook = XLSX.read(buffer, { type: "array" });
-                const sheet = workbook.Sheets[workbook.SheetNames[0]];
-                const data = XLSX.utils.sheet_to_json(sheet);
-                console.log(data)
-                sendResponse({ exams: data });
-            })
-            .catch(error => {
-                console.error("Error loading exam schedule:", error);
-                sendResponse({ error: "Failed to load exam schedule" });
-            });
-        return true;  // Keep the message channel open
+
+// Send data to popup when requested
+chrome.runtime.onConnect.addListener(port => {
+    if (port.name === "popup") {
+        port.postMessage(pageData);
     }
 });

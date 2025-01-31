@@ -1,16 +1,23 @@
 {
   "manifest_version": 3,
-  "name": "Student ID Extractor",
+  "name": "Exam",
   "version": "1.0",
   "description": "Extracts student ID from webpage",
   "permissions": ["storage", "tabs", "activeTab"],
   "action": {
     "default_popup": "popup.html"
   },
+  "background": {
+    "service_worker": "background.js"
+  },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["content.js"]
+      "js": ["xlsx.full.min.js", "content.js"]
     }
-  ]
+  ],
+  "web_accessible_resources": [{
+    "resources": ["final/final-exam-schedule_sose_undergrad_243.xlsx"],
+    "matches": ["<all_urls>"]
+  }]
 }

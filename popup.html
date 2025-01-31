@@ -1,40 +1,162 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <style>
-    body {
-      width: 300px;
-      padding: 10px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 5px 0;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
-    th {
-      background-color: #f2f2f2;
-    }
-  </style>
-</head>
-<body>
-  <h3>Student ID:</h3>
-  <div id="studentId"></div>
-  <h3>Courses:</h3>
-  <table>
-    <thead>
-      <tr>
-        <th>Course Code</th>
-        <th>Section</th>
-      </tr>
-    </thead>
-    <tbody id="coursesList">
-    </tbody>
-  </table>
-  <script src="popup.js"></script>
-</body>
+  <head>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
+      body {
+        width: 600px;
+        padding: 20px;
+        font-family: "Montserrat", "Roboto", sans-serif;
+        background-color: #fff;
+      }
+
+      h3 {
+        color: #0bc483;
+        margin-bottom: 12px;
+        font-weight: 600;
+        opacity: 0.9;
+      }
+
+      .student-info {
+        background: linear-gradient(145deg, #ffffff, #f0f0f0);
+        border-radius: 15px;
+        padding: 12px 20px;
+        margin-bottom: 20px;
+        box-shadow: 8px 8px 16px #e6e6e6, -8px -8px 16px #ffffff;
+      }
+
+      .student-name {
+        color: #0bc483;
+        font-size: 1.4em;
+        font-weight: 600;
+        margin-bottom: 2px;
+        text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.8);
+      }
+
+      .student-id-label {
+        color: #0bc483;
+        font-size: 0.9em;
+        margin-bottom: 4px;
+      }
+
+      #studentId {
+        display: inline-block;
+        background-color: rgba(11, 196, 131, 0.1);
+        color: #0bc483;
+        padding: 2px 12px;
+        border-radius: 20px;
+        font-size: 1em;
+        margin-bottom: 0;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05),
+          0 2px 4px rgba(11, 196, 131, 0.1);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin: 5px 0;
+        margin-top: 2px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.01);
+        border: 1px solid rgba(11, 196, 131, 0.2);
+      }
+
+      th,
+      td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+      }
+
+      th {
+        background: linear-gradient(180deg, #0bc483 0%, #09b576 100%);
+        color: white;
+        font-weight: 500;
+        border-bottom: none;
+        text-shadow: none;
+      }
+
+      thead tr th:first-child {
+        border-top-left-radius: 8px;
+      }
+
+      thead tr th:last-child {
+        border-top-right-radius: 8px;
+      }
+
+      tr:hover {
+        background-color: rgba(11, 196, 131, 0.05);
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(11, 196, 131, 0.1);
+        transition: all 0.2s ease;
+      }
+
+      td {
+        color: #444;
+        border-bottom: 1px solid rgba(11, 196, 131, 0.15);
+        background: none;
+      }
+
+      tbody tr:last-child td {
+        border-bottom: none;
+      }
+
+      .floating-card {
+        display: none;
+        position: fixed;
+        background: white;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        z-index: 1000;
+        width: 280px;
+        text-align: center;
+        border: 1px solid rgba(11, 196, 131, 0.2);
+        pointer-events: none;
+      }
+
+      .floating-card h4 {
+        color: #0bc483;
+        margin: 0 0 10px 0;
+        font-size: 1.1em;
+      }
+
+      .floating-card p {
+        margin: 5px 0;
+        color: #444;
+        font-size: 0.9em;
+      }
+
+      .floating-card .detail-label {
+        color: #0bc483;
+        font-weight: 500;
+        margin-right: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="student-info">
+      <div class="student-name" id="studentName"></div>
+      <div id="studentId"></div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Course Code</th>
+          <th>Course Title</th>
+          <th>Section</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Room</th>
+        </tr>
+      </thead>
+      <tbody id="coursesList"></tbody>
+    </table>
+    <div id="floatingCard" class="floating-card"></div>
+    <script src="popup.js"></script>
+    <script src="xlsx.full.min.js"></script>
+  </body>
 </html>
