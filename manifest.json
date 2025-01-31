@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Exam",
+  "name": "Get Schedule",
   "version": "1.0",
   "description": "Extracts student ID from webpage",
   "permissions": ["storage", "tabs", "activeTab"],
@@ -11,7 +11,7 @@
     "service_worker": "background.js"
   },
   "icons": {
-    "32": "icons8-education-office-m-32.png"
+    "32": "icon.png"
   },
   "content_scripts": [
     {
