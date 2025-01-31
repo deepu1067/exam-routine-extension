@@ -1,4 +1,4 @@
-# Exam Extension
+# Get Schedule
 
 ## Description
 
