@@ -6,7 +6,7 @@ The Exam Extension extracts student IDs from web pages and provides easy access 
 
 ## Features
 
-- Access to the exam schedule
+- Access to the final exam schedule for fall 24
 
 ## Installation
 
