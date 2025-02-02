@@ -12,10 +12,26 @@ function convertTo24Hour(time) {
 
 document.addEventListener("DOMContentLoaded", function () {
   const updateUI = async (studentData) => {  // Added async keyword
+    const coursesList = document.getElementById("coursesList");
+    // Show loading indicator
+    coursesList.innerHTML = `
+      <tr>
+        <td colspan="6">
+          <div class="loading-container">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Loading exam schedule...</div>
+          </div>
+        </td>
+      </tr>
+    `;
+
     try {
       document.getElementById("studentId").textContent = studentData.studentId || "Not found";
       document.getElementById("studentName").textContent = studentData.studentName || "Not found";
       const matchedCourses = await matchCoursesWithExam(studentData.studentId, studentData.courses);
+
+      // Clear loading indicator
+      coursesList.innerHTML = "";
 
       // Sort courses by exam date and time
       matchedCourses.sort((a, b) => {
@@ -26,9 +42,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         return new Date(`1970-01-01T${convertTo24Hour(a.time)}`).getTime() - new Date(`1970-01-01T${convertTo24Hour(b.time)}`).getTime();
       });
-
-      const coursesList = document.getElementById("coursesList");
-      coursesList.innerHTML = "";
 
       if (matchedCourses?.length > 0) {
         matchedCourses.forEach(course => {
