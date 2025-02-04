@@ -180,6 +180,33 @@
         transform: translateY(-2px);
         box-shadow: 6px 6px 12px #d9d9d9, -6px -6px 12px #ffffff;
       }
+
+      .pdf-button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: linear-gradient(145deg, #0bc483, #09b576);
+        padding: 12px 24px;
+        border-radius: 10px;
+        cursor: pointer;
+        color: white;
+        border: none;
+        margin-top: 20px;
+        font-family: "Montserrat", "Roboto", sans-serif;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 8px rgba(11, 196, 131, 0.2);
+      }
+
+      .pdf-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(11, 196, 131, 0.3);
+      }
+
+      .pdf-button:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(11, 196, 131, 0.2);
+      }
     </style>
     <link rel="stylesheet" href="popup.css" />
   </head>
@@ -218,6 +245,8 @@
       <tbody id="coursesList"></tbody>
     </table>
     <div id="floatingCard" class="floating-card"></div>
+    <button id="generatePdf" class="pdf-button">Generate PDF</button>
+    <script src="html2pdf.bundle.min.js"></script>
     <script src="popup.js"></script>
     <script src="xlsx.full.min.js"></script>
   </body>

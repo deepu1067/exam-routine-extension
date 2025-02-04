@@ -11,15 +11,20 @@ function convertTo24Hour(time) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+  // Hide PDF button initially
+  document.getElementById('generatePdf').style.display = 'none';
+
   const updateUI = async (studentData, examSchedule) => {  // Added async keyword
     const coursesList = document.getElementById("coursesList");
+    const generatePdfButton = document.getElementById('generatePdf');
 
     // Always show student info if available
     document.getElementById("studentId").textContent = studentData.studentId || "Not found";
     document.getElementById("studentName").textContent = studentData.studentName || "Not found";
 
-    // If no exam schedule data, show upload prompt
+    // Hide PDF button when showing upload prompt
     if (!examSchedule) {
+      generatePdfButton.style.display = 'none';
       coursesList.innerHTML = `
         <tr>
           <td colspan="6">
@@ -32,7 +37,8 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    // Show loading when processing exam schedule
+    // Hide PDF button during loading
+    generatePdfButton.style.display = 'none';
     coursesList.innerHTML = `
       <tr>
         <td colspan="6">
@@ -65,6 +71,9 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       if (matchedCourses?.length > 0) {
+        // Show PDF button only when courses are displayed
+        generatePdfButton.style.display = 'block';
+
         matchedCourses.forEach(course => {
           coursesList.innerHTML += `
             <tr data-course-title="${course.title}" 
@@ -133,9 +142,11 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         });
       } else {
+        generatePdfButton.style.display = 'none';
         coursesList.innerHTML = `<tr><td colspan="5">No courses found</td></tr>`;
       }
     } catch (error) {
+      generatePdfButton.style.display = 'none';
       console.error('Error updating UI:', error);
       const coursesList = document.getElementById("coursesList");
       coursesList.innerHTML = `<tr><td colspan="5">Error loading data: ${error.message}</td></tr>`;
@@ -171,6 +182,41 @@ document.addEventListener("DOMContentLoaded", function () {
         reader.readAsBinaryString(file);
       }
     });
+  });
+
+  // Add PDF generation functionality
+  document.getElementById('generatePdf').addEventListener('click', function() {
+    const element = document.querySelector('table');
+    const studentName = document.getElementById('studentName').textContent;
+    const studentId = document.getElementById('studentId').textContent;
+
+    const opt = {
+      margin: 1,
+      filename: `exam_schedule_${studentId}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+    };
+
+    // Create a temporary container for PDF generation
+    const container = document.createElement('div');
+    container.style.padding = '20px';
+    
+    // Add student info
+    const header = document.createElement('div');
+    header.style.marginBottom = '20px';
+    header.innerHTML = `
+      <h2 style="color: #0bc483; margin-bottom: 5px;">${studentName}</h2>
+      <p style="margin: 0; color: #444;">Student ID: ${studentId}</p>
+    `;
+    container.appendChild(header);
+    
+    // Add the table
+    const tableClone = element.cloneNode(true);
+    container.appendChild(tableClone);
+
+    // Generate PDF
+    html2pdf().set(opt).from(container).save();
   });
 });
 
