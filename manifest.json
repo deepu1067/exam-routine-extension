@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Get Schedule",
-  "version": "1.0",
-  "description": "Extracts student ID from webpage",
+  "version": "2.0",
+  "description": "Get Exam Routine",
   "permissions": ["storage", "tabs", "activeTab"],
   "action": {
     "default_popup": "popup.html"
@@ -21,7 +21,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["final/final-exam-schedule_sose_undergrad_243.xlsx"],
+      "resources": ["*.xlsx"],
       "matches": ["<all_urls>"]
     }
   ]

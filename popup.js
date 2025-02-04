@@ -11,9 +11,28 @@ function convertTo24Hour(time) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  const updateUI = async (studentData) => {  // Added async keyword
+  const updateUI = async (studentData, examSchedule) => {  // Added async keyword
     const coursesList = document.getElementById("coursesList");
-    // Show loading indicator
+
+    // Always show student info if available
+    document.getElementById("studentId").textContent = studentData.studentId || "Not found";
+    document.getElementById("studentName").textContent = studentData.studentName || "Not found";
+
+    // If no exam schedule data, show upload prompt
+    if (!examSchedule) {
+      coursesList.innerHTML = `
+        <tr>
+          <td colspan="6">
+            <div class="upload-prompt">
+              <p>Please provide your exam routine</p>
+            </div>
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    // Show loading when processing exam schedule
     coursesList.innerHTML = `
       <tr>
         <td colspan="6">
@@ -26,9 +45,11 @@ document.addEventListener("DOMContentLoaded", function () {
     `;
 
     try {
-      document.getElementById("studentId").textContent = studentData.studentId || "Not found";
-      document.getElementById("studentName").textContent = studentData.studentName || "Not found";
-      const matchedCourses = await matchCoursesWithExam(studentData.studentId, studentData.courses);
+      // console.log('Matching courses with before match schedule');
+      // console.log(studentData.studentId);
+      // console.log(studentData.courses);
+
+      const matchedCourses = await matchCoursesWithExam(studentData.studentId, studentData.courses, examSchedule);
 
       // Clear loading indicator
       coursesList.innerHTML = "";
@@ -81,15 +102,15 @@ document.addEventListener("DOMContentLoaded", function () {
             `;
 
             floatingCard.style.display = 'block';
-            
+
             // Improve positioning to prevent off-screen display
             const windowWidth = window.innerWidth;
             const windowHeight = window.innerHeight;
             const cardWidth = 280; // Assuming fixed width
-            
+
             let left = e.pageX - 140;
             let top = e.pageY - floatingCard.offsetHeight - 10;
-            
+
             // Adjust if too close to right edge
             if (left + cardWidth > windowWidth) {
               left = windowWidth - cardWidth - 10;
@@ -127,27 +148,39 @@ document.addEventListener("DOMContentLoaded", function () {
 
   port.onMessage.addListener((data) => {
     console.log(data);
-    updateUI(data);
+    const studentData = data;
+
+    // Initial UI update without exam schedule
+    updateUI(studentData, null);
+
+    const fileInput = document.getElementById('excelFileInput');
+
+    fileInput.addEventListener('change', async (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+          const data = e.target.result;
+          const workbook = XLSX.read(data, { type: 'binary' });
+          const sheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[sheetName];
+          const examSchedule = XLSX.utils.sheet_to_json(worksheet);
+
+          updateUI(studentData, examSchedule);
+        };
+        reader.readAsBinaryString(file);
+      }
+    });
   });
 });
 
-async function readApiRoutine(studentId) {
-  try {
-    const response = await fetch('https://exam-routine.onrender.com/?student_id='+studentId);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const examSchedule = await response.json();
-    return examSchedule;
-  } catch (error) {
-    console.error('Error fetching exam routine:', error);
-    throw error;
-  }
-}
+async function matchCoursesWithExam(studentId, courses, examSchedule) {
+  // const examSchedule = await readApiRoutine(studentId);
+  // console.log('Matching courses with exam schedule');
+  // console.log(studentId);
+  // console.log(courses);
+  // console.log(examSchedule);
 
-async function matchCoursesWithExam(studentId, courses) {
-  const examSchedule = await readApiRoutine(studentId);
-  console.log(examSchedule);
   const matchedCourses = courses.map(course => {
     const examInfo = examSchedule.find(row => {
       const rowCourseCode = row['Course Code'].replace(/\s+/g, '');

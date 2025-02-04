@@ -2,7 +2,7 @@
 <html>
   <head>
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900&display=swap");
 
       body {
         width: 600px;
@@ -24,6 +24,15 @@
         padding: 12px 20px;
         margin-bottom: 20px;
         box-shadow: 8px 8px 16px #e6e6e6, -8px -8px 16px #ffffff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .student-details {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
       }
 
       .student-name {
@@ -134,13 +143,66 @@
         font-weight: 500;
         margin-right: 5px;
       }
+
+      .upload-container {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+
+      .upload-button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: linear-gradient(145deg, #ffffff, #f0f0f0);
+        padding: 8px 16px;
+        border-radius: 10px;
+        cursor: pointer;
+        box-shadow: 5px 5px 10px #d9d9d9, -5px -5px 10px #ffffff;
+        transition: all 0.2s ease;
+        border: 1px solid rgba(11, 196, 131, 0.1);
+      }
+
+      .upload-button:active {
+        box-shadow: inset 5px 5px 10px #d9d9d9, inset -5px -5px 10px #ffffff;
+        transform: scale(0.98);
+      }
+
+      .upload-label-text {
+        color: #0bc483;
+        font-size: 0.9em;
+        font-weight: 500;
+      }
+
+      .upload-button:hover {
+        background: linear-gradient(145deg, #f0f0f0, #ffffff);
+        transform: translateY(-2px);
+        box-shadow: 6px 6px 12px #d9d9d9, -6px -6px 12px #ffffff;
+      }
     </style>
-    <link rel="stylesheet" href="popup.css">
+    <link rel="stylesheet" href="popup.css" />
   </head>
   <body>
     <div class="student-info">
-      <div class="student-name" id="studentName"></div>
-      <div id="studentId"></div>
+      <div class="student-details">
+        <div class="student-name" id="studentName"></div>
+        <div id="studentId"></div>
+      </div>
+      <div class="upload-container">
+        <label for="excelFileInput">
+          <div class="upload-button">
+            <span class="upload-label-text">Upload Routine</span>
+            <input
+              type="file"
+              id="excelFileInput"
+              style="display: none"
+              accept=".xlsx"
+            />
+            <img src="upload.png" width="24" alt="Upload" />
+          </div>
+        </label>
+      </div>
     </div>
     <table>
       <thead>
@@ -157,5 +219,6 @@
     </table>
     <div id="floatingCard" class="floating-card"></div>
     <script src="popup.js"></script>
+    <script src="xlsx.full.min.js"></script>
   </body>
 </html>

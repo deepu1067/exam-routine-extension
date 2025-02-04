@@ -2,11 +2,11 @@
 
 ## Description
 
-The Exam Extension extracts student IDs from web pages and provides easy access to the final exam schedule.
+The Exam Extension extracts student ID from web pages and provides easy access to the final exam schedule.
 
 ## Features
 
-- Access to the final exam schedule for fall 24
+- Access to the final exam schedule
 
 ## Installation
 
@@ -23,27 +23,14 @@ The Exam Extension extracts student IDs from web pages and provides easy access 
 
 ### Step 3: Verify the Extension
 
-1. Ensure the extension appears in the list with the name "Exam".
+1. Ensure the extension appears in the list with the name "Get Schedule".
 2. Click on the extension icon to open the popup and verify it works correctly.
 
 ## Usage
 
 - Click on the extension icon to open the popup.
-- Access the final exam schedule directly from the popup.
-
-## Permissions
-
-This extension requires the following permissions:
-
-- `storage`: To store user preferences.
-- `tabs`: To access the current tab.
-- `activeTab`: To interact with the active tab.
-
-## Icons
-
-The extension uses the following icon:
-
-- `icon.png`
+- Upload your exam routine
+- Enjoy
 
 ## License
 
