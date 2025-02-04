@@ -29,7 +29,7 @@ The Exam Extension extracts student ID from web pages and provides easy access t
 ## Usage 📱
 
 - Click on the extension icon to open the popup 🖱️
-- Upload your exam routine 📤
+- Upload your updated exam routine 📤
 - Enjoy 🔥
 - Download your exam routine 📥
 
